@@ -2,7 +2,7 @@ import sqlite3
 import uuid
 
 class dao:
-    __conn=sqlite3.connect('todo_list.db')
+    __conn=sqlite3.connect('todo_list.db',check_same_thread=False)
 
     def __uuidtotablename(self,u):
         check_tb_cmd = '''SELECT loginname from userslist where nickname like\'''' + u + '''\';'''
@@ -59,7 +59,8 @@ class dao:
         return 'OK'
 
     def logincheck(self,l,p):
-        try:
+        # try:
+        #     self.conn = sqlite3.connect('todo_list.db')
             check_tb_cmd = '''SELECT * from userslist where loginname like\'''' + l + '''\'and passwd like\''''+p+'''\';'''
             cursor=self.__conn.execute(check_tb_cmd)
             self.__conn.commit()
@@ -70,8 +71,8 @@ class dao:
                     return 'login failed'
                 return {'staus':'OK','uuid':c[3]}
             return 'login failed'
-        except:
-            return 'sql error'
+        # except:
+            # return 'sql error'
 
     def insertactivity(self,a,u):
         try:
@@ -125,15 +126,17 @@ class dao:
         except:
             return 'sql error'
 
+
+d=dao()
 if __name__=='__main__':
     d=dao()
     # d.checkoradduser("testuser")
     # test2={'loginname':'test3','passwd':'test'}
     # print(d.adduser(test2))
-    s=d.logincheck('test3','test')
+    # s=d.logincheck('test3','test')
     # print(s['uuid'])
     # aa={'instrudction':'test1331','starttime':'test11','dealinetime':'test111','emergecny':'121','cate':'test1111'}
     # print(d.insertactivity(aa,s['uuid']))
     # print(uuid.uuid1())
-    lll=[{'ID': 2, 'instrudction': 'testadfa', 'starttime': 'test1dddd', 'dealinetime': 'test111', 'emergecny': 121, 'cate': 'test1111'}]
-    print(d.deleteactivities(lll,s['uuid']))
+    # lll=[{'ID': 2, 'instrudction': 'testadfa', 'starttime': 'test1dddd', 'dealinetime': 'test111', 'emergecny': 121, 'cate': 'test1111'}]
+    # print(d.deleteactivities(lll,s['uuid']))
