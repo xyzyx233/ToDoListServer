@@ -46,17 +46,18 @@ class dao:
             check_tb_cmd='''SELECT count() from userslist where loginname like\''''+newuser['loginname']+'''\';'''
             cursor=self.__conn.execute(check_tb_cmd)
             self.__conn.commit()
+            xx=str(uuid.uuid1())
             for c in cursor:
                 if c[0]!=0:
                     return 'error username'
-            insert_tb_cmd='''INSERT INTO userslist (loginname,passwd,nickname)VALUES (\''''+newuser['loginname']+'''\',\''''+newuser['passwd']+'''\',\''''+str(uuid.uuid1())+'''\');'''
+            insert_tb_cmd='''INSERT INTO userslist (loginname,passwd,nickname)VALUES (\''''+newuser['loginname']+'''\',\''''+newuser['passwd']+'''\',\''''+xx+'''\');'''
             self.__conn.execute(insert_tb_cmd)
             self.__conn.commit()
             if not self.__checkoradduser(newuser['loginname']):
                 return 'create table failed'
         except:
             return 'sql error'
-        return 'OK'
+        return xx
 
     def logincheck(self,l,p):
         # try:
